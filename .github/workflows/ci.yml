@@ -1,0 +1,124 @@
+name: CI - Quality Checks
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  setup:
+    name: Setup Python Environment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install black flake8 isort mypy
+
+  lint:
+    name: Lint with Flake8
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Flake8
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+
+      - name: Run Flake8
+        run: |
+          flake8 . --config=.flake8 --count --show-source --statistics
+
+  format-check:
+    name: Check Code Formatting (Black)
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Black
+        run: |
+          python -m pip install --upgrade pip
+          pip install black
+
+      - name: Check formatting with Black
+        run: |
+          black --check .
+
+  import-sort-check:
+    name: Check Import Sorting (isort)
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install isort
+        run: |
+          python -m pip install --upgrade pip
+          pip install isort
+
+      - name: Check import sorting
+        run: |
+          isort --check-only --profile black .
+
+  type-check:
+    name: Type Check (Optional - MyPy)
+    runs-on: ubuntu-latest
+    needs: setup
+    continue-on-error: true  # Ne bloque pas si MyPy échoue (optionnel)
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install mypy
+
+      - name: Run MyPy
+        run: |
+          mypy main.py --ignore-missing-imports || true
+

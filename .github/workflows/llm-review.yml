@@ -1,0 +1,124 @@
+name: LLM Code Review & Email Notification
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - develop
+
+jobs:
+  review_and_notify:
+    name: AI Code Review & Team Notification
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get PR diff
+        id: get_diff
+        run: |
+          # Récupérer le diff de la PR
+          git fetch origin ${{ github.base_ref }}
+          DIFF=$(git diff origin/${{ github.base_ref }}...HEAD)
+          
+          # Sauvegarder le diff dans un fichier
+          echo "$DIFF" > pr_diff.txt
+          
+          # Limiter la taille du diff pour l'API (max 4000 caractères)
+          DIFF_TRUNCATED=$(echo "$DIFF" | head -c 4000)
+          
+          # Échapper les caractères spéciaux pour JSON
+          DIFF_ESCAPED=$(echo "$DIFF_TRUNCATED" | jq -Rs .)
+          
+          echo "diff_content=$DIFF_ESCAPED" >> $GITHUB_OUTPUT
+
+      - name: Call Gemini API for Code Review
+        id: llm_review
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          # Préparer le prompt pour l'IA
+          PROMPT="Tu es un relecteur de code expert en Python et FastAPI. Analyse ce diff de code. Si le code est bon, fournis des pistes d'amélioration constructives. Si le code contient des bugs ou des problèmes, liste-les clairement. Réponds en français de manière concise et professionnelle.\n\nDiff:\n${{ steps.get_diff.outputs.diff_content }}"
+          
+          # Appeler l'API Gemini
+          RESPONSE=$(curl -s -X POST \
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}" \
+            -H 'Content-Type: application/json' \
+            -d "{
+              \"contents\": [{
+                \"parts\": [{
+                  \"text\": \"${PROMPT}\"
+                }]
+              }]
+            }")
+          
+          # Extraire la réponse
+          REVIEW=$(echo "$RESPONSE" | jq -r '.candidates[0].content.parts[0].text // "Erreur lors de la génération de la revue."')
+          
+          # Sauvegarder la revue
+          echo "$REVIEW" > llm_review.txt
+          
+          # Échapper pour GitHub Output
+          REVIEW_ESCAPED=$(echo "$REVIEW" | jq -Rs .)
+          echo "review_content=$REVIEW_ESCAPED" >> $GITHUB_OUTPUT
+
+      - name: Comment on PR with LLM Review
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const review = fs.readFileSync('llm_review.txt', 'utf8');
+            
+            const comment = `## 🤖 Revue de Code par IA
+            
+            @${{ github.actor }}, voici l'analyse automatique de votre code :
+            
+            ${review}
+            
+            ---
+            *Cette revue a été générée automatiquement par Gemini AI. Veuillez également attendre la revue humaine de vos pairs.*`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: Send Email Notification to Team
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "🔔 Revue LLM pour PR #${{ github.event.pull_request.number }} par @${{ github.actor }}"
+          to: ${{ secrets.TEAM_EMAIL_LIST }}
+          from: ProjetAPI Bot <${{ secrets.MAIL_USERNAME }}>
+          body: |
+            Bonjour l'équipe ProjetAPI,
+            
+            Une nouvelle revue de code automatique a été générée pour la Pull Request #${{ github.event.pull_request.number }}.
+            
+            📋 Détails de la PR:
+            - Auteur: @${{ github.actor }}
+            - Titre: ${{ github.event.pull_request.title }}
+            - Branche: ${{ github.head_ref }} → ${{ github.base_ref }}
+            - Lien: ${{ github.event.pull_request.html_url }}
+            
+            🤖 Revue IA:
+            ${{ steps.llm_review.outputs.review_content }}
+            
+            👉 Veuillez consulter la PR sur GitHub pour plus de détails et effectuer votre propre revue.
+            
+            ---
+            Ceci est un message automatique généré par GitHub Actions.
+          content_type: text/plain
+
