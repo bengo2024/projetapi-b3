@@ -83,3 +83,35 @@ def health_check():
     """Vérification de l'état de l'API"""
     return {"status": "healthy"}
 
+
+# ============================================================================
+# ENDPOINTS DE L'API
+# ============================================================================
+
+
+@app.post("/projects", response_model=Project, status_code=status.HTTP_201_CREATED)
+def create_project(project: ProjectCreate):
+    """Créer un nouveau projet"""
+    db = read_db()
+
+    # Générer un nouvel ID
+    new_id = db["next_id"]
+
+    # Créer le projet
+    new_project = {
+        "id": new_id,
+        "studentName": project.studentName,
+        "course": project.course,
+        "githubUrl": str(project.githubUrl),
+        "grade": None,
+    }
+
+    # Ajouter à la liste
+    db["projects"].append(new_project)
+    db["next_id"] += 1
+
+    # Sauvegarder
+    write_db(db)
+
+    return new_project
+
