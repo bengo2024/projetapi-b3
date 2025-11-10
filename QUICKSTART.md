@@ -159,7 +159,7 @@ git switch develop
 git pull origin develop
 
 # 3. Créer une branche feature
-git switch -c feature/post-projects
+git switch -c feature/post-projects (ta branche porte le nom de ta fonctionnalité)
 
 # 4. Développer dans main.py
 # Voir ENDPOINTS_EXAMPLES.md pour des exemples de code
