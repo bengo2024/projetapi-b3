@@ -3,8 +3,9 @@ ProjetAPI - API REST pour gérer les soumissions de projets étudiants
 """
 
 import json
-from typing import List, Optional
-from fastapi import FastAPI, HTTPException, status
+from typing import List, Optional  # noqa: F401 - Will be used in future endpoints
+
+from fastapi import FastAPI, HTTPException, status  # noqa: F401
 from pydantic import BaseModel, HttpUrl
 
 
@@ -83,3 +84,34 @@ def health_check():
     """Vérification de l'état de l'API"""
     return {"status": "healthy"}
 
+
+# ============================================================================
+# ENDPOINTS DE L'API
+# ============================================================================
+
+
+@app.post("/projects", response_model=Project, status_code=status.HTTP_201_CREATED)
+def create_project(project: ProjectCreate):
+    """Créer un nouveau projet"""
+    db = read_db()
+
+    # Générer un nouvel ID
+    new_id = db["next_id"]
+
+    # Créer le projet
+    new_project = {
+        "id": new_id,
+        "studentName": project.studentName,
+        "course": project.course,
+        "githubUrl": str(project.githubUrl),
+        "grade": None,
+    }
+
+    # Ajouter à la liste
+    db["projects"].append(new_project)
+    db["next_id"] += 1
+
+    # Sauvegarder
+    write_db(db)
+
+    return new_project
