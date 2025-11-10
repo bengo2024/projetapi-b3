@@ -3,8 +3,9 @@ ProjetAPI - API REST pour gérer les soumissions de projets étudiants
 """
 
 import json
-from typing import List, Optional
-from fastapi import FastAPI, HTTPException, status
+from typing import List, Optional  # noqa: F401 - Will be used in future endpoints
+
+from fastapi import FastAPI, HTTPException, status  # noqa: F401
 from pydantic import BaseModel, HttpUrl
 
 
@@ -114,4 +115,3 @@ def create_project(project: ProjectCreate):
     write_db(db)
 
     return new_project
-
