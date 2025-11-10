@@ -3,8 +3,9 @@ ProjetAPI - API REST pour gérer les soumissions de projets étudiants
 """
 
 import json
-from typing import List, Optional
-from fastapi import FastAPI, HTTPException, status
+from typing import Optional
+
+from fastapi import FastAPI, status
 from pydantic import BaseModel, HttpUrl
 
 
@@ -83,3 +84,49 @@ def health_check():
     """Vérification de l'état de l'API"""
     return {"status": "healthy"}
 
+
+@app.post("/projects", status_code=status.HTTP_201_CREATED)
+def create_project(project: ProjectCreate):
+    """Créer un nouveau projet"""
+    db = read_db()
+
+    # Générer un nouvel ID
+    new_id = db["next_id"]
+
+    # Créer le projet
+    new_project = {
+        "id": new_id,
+        "studentName": project.studentName,
+        "course": project.course,
+        "githubUrl": str(project.githubUrl),
+        "grade": None,
+    }
+
+    # Ajouter à la liste
+    db["projects"].append(new_project)
+    db["next_id"] += 1
+
+    # Sauvegarder
+    write_db(db)
+
+    return new_project
+
+
+@app.put("/projects/{project_id}/grade")
+def update_project_grade(project_id: int, grade_update: GradeUpdate):
+    """Mettre à jour la note d'un projet"""
+    db = read_db()
+
+    # Validation de la note
+    if not 0 <= grade_update.grade <= 20:
+        return {"error": "Grade must be between 0 and 20"}
+
+    # Chercher et mettre à jour le projet
+    for project in db["projects"]:
+        if project["id"] == project_id:
+            project["grade"] = grade_update.grade
+            write_db(db)
+            return project
+
+    # Si non trouvé
+    return {"error": f"Project with id {project_id} not found"}

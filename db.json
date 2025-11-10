@@ -1,5 +1,12 @@
 {
-  "projects": [],
-  "next_id": 1
+  "projects": [
+    {
+      "id": 1,
+      "studentName": "Test Student",
+      "course": "Mathematics",
+      "githubUrl": "https://github.com/test/math-project",
+      "grade": 18.5
+    }
+  ],
+  "next_id": 2
 }
-
