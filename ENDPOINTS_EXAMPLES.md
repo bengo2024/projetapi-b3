@@ -23,10 +23,10 @@ Créer un endpoint qui permet de soumettre un nouveau projet étudiant.
 def create_project(project: ProjectCreate):
     """Créer un nouveau projet"""
     db = read_db()
-    
+
     # Générer un nouvel ID
     new_id = db["next_id"]
-    
+
     # Créer le projet
     new_project = {
         "id": new_id,
@@ -35,14 +35,14 @@ def create_project(project: ProjectCreate):
         "githubUrl": str(project.githubUrl),
         "grade": None
     }
-    
+
     # Ajouter à la liste
     db["projects"].append(new_project)
     db["next_id"] += 1
-    
+
     # Sauvegarder
     write_db(db)
-    
+
     return new_project
 ```
 
@@ -141,12 +141,12 @@ Récupérer les détails d'un projet spécifique par son ID.
 def get_project_by_id(project_id: int):
     """Récupérer un projet par son ID"""
     db = read_db()
-    
+
     # Chercher le projet
     for project in db["projects"]:
         if project["id"] == project_id:
             return project
-    
+
     # Si non trouvé, lever une exception 404
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
@@ -194,21 +194,21 @@ Permettre à un professeur d'ajouter ou modifier la note d'un projet.
 def update_project_grade(project_id: int, grade_update: GradeUpdate):
     """Mettre à jour la note d'un projet"""
     db = read_db()
-    
+
     # Validation de la note
     if not 0 <= grade_update.grade <= 20:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Grade must be between 0 and 20"
         )
-    
+
     # Chercher et mettre à jour le projet
     for project in db["projects"]:
         if project["id"] == project_id:
             project["grade"] = grade_update.grade
             write_db(db)
             return project
-    
+
     # Si non trouvé
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
@@ -256,7 +256,7 @@ Supprimer une soumission de projet.
 def delete_project(project_id: int):
     """Supprimer un projet"""
     db = read_db()
-    
+
     # Chercher l'index du projet
     for i, project in enumerate(db["projects"]):
         if project["id"] == project_id:
@@ -266,7 +266,7 @@ def delete_project(project_id: int):
                 "message": f"Project {project_id} deleted successfully",
                 "deleted_project": deleted_project
             }
-    
+
     # Si non trouvé
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
@@ -316,13 +316,13 @@ Récupérer tous les projets d'un cours spécifique.
 def get_projects_by_course(course_name: str):
     """Récupérer tous les projets d'un cours spécifique"""
     db = read_db()
-    
+
     # Filtrer les projets par cours (insensible à la casse)
     filtered_projects = [
         project for project in db["projects"]
         if project["course"].lower() == course_name.lower()
     ]
-    
+
     return filtered_projects
 ```
 
@@ -462,4 +462,3 @@ Docs: Update API documentation in Wiki (fixes #7)
 ---
 
 **Bon développement ! 🚀**
-

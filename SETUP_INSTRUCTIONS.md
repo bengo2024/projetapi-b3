@@ -267,4 +267,3 @@ git push origin feature/votre-branche
 Pour toute question, contactez le Lead du groupe ou discutez sur votre canal de communication d'équipe.
 
 **Bon courage ! 🚀**
-

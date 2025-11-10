@@ -3,8 +3,9 @@ ProjetAPI - API REST pour gérer les soumissions de projets étudiants
 """
 
 import json
-from typing import List, Optional
-from fastapi import FastAPI, HTTPException, status
+from typing import Optional
+
+from fastapi import FastAPI, status
 from pydantic import BaseModel, HttpUrl
 
 
@@ -83,3 +84,34 @@ def health_check():
     """Vérification de l'état de l'API"""
     return {"status": "healthy"}
 
+
+@app.post(
+    "/projects",
+    response_model=Project,
+    status_code=status.HTTP_201_CREATED,
+    summary="Soumettre un nouveau projet",
+)
+def create_project(project: ProjectCreate):
+    """
+    Endpoint pour soumettre un nouveau projet étudiant.
+    Génère un ID unique et enregistre le projet dans db.json.
+    """
+    data = read_db()
+
+    # Création du nouveau projet avec un ID auto-incrémenté
+    new_project = Project(
+        id=data["next_id"],
+        studentName=project.studentName,
+        course=project.course,
+        githubUrl=str(project.githubUrl),
+        grade=None,
+    )
+
+    # Ajout à la base de données
+    data["projects"].append(new_project.dict())
+    data["next_id"] += 1
+
+    # Écriture dans db.json
+    write_db(data)
+
+    return new_project

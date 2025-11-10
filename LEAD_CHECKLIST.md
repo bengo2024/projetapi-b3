@@ -436,4 +436,3 @@ Utilisez **RAPPORT_TEMPLATE.md** comme base.
 ---
 
 **Bon courage ! Vous allez assurer ! 🚀**
-

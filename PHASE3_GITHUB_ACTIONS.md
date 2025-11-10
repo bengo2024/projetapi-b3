@@ -359,4 +359,3 @@ Consultez le Wiki pour la documentation complète.
 ---
 
 **Bon courage pour la Phase 3 ! 🚀**
-
