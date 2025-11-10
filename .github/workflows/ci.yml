@@ -121,4 +121,3 @@ jobs:
       - name: Run MyPy
         run: |
           mypy main.py --ignore-missing-imports || true
-

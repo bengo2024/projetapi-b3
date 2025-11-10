@@ -1,6 +1,6 @@
 # 📊 État du Projet - ProjetAPI
 
-> **Dernière mise à jour :** Initialisation complète  
+> **Dernière mise à jour :** Initialisation complète
 > **Statut :** ✅ Prêt pour le déploiement et le développement
 
 ---
@@ -320,6 +320,5 @@ Tout le code de base, la configuration, la documentation et les workflows sont e
 
 ---
 
-**Dernière mise à jour :** Phase 1 complétée  
+**Dernière mise à jour :** Phase 1 complétée
 **Prochaine étape :** Création du dépôt GitHub par le Lead
-

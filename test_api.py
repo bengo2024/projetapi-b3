@@ -3,8 +3,9 @@ Script de test pour ProjetAPI
 Teste tous les endpoints de l'API
 """
 
-import requests
 import json
+
+import requests
 
 BASE_URL = "http://localhost:8000"
 
@@ -125,9 +126,7 @@ def test_get_nonexistent_project():
         print_success(f"404 correctement retourné (HTTP {response.status_code})")
         print_response(response)
     else:
-        print_error(
-            f"Code HTTP incorrect (attendu 404, reçu {response.status_code})"
-        )
+        print_error(f"Code HTTP incorrect (attendu 404, reçu {response.status_code})")
         print_response(response)
 
 
@@ -149,9 +148,7 @@ def test_update_grade(project_id):
 
 def test_filter_by_course():
     """Test 8: GET /projects/course/:courseName - Filtrer par cours"""
-    print_test(
-        "Test 8: GET /projects/course/Versionning Git - Filtrer par cours"
-    )
+    print_test("Test 8: GET /projects/course/Versionning Git - Filtrer par cours")
 
     response = requests.get(f"{BASE_URL}/projects/course/Versionning Git")
 
@@ -248,4 +245,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

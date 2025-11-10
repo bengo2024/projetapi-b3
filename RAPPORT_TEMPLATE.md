@@ -238,7 +238,7 @@ Tous les endpoints utilisent Pydantic pour valider :
 
 **Problème :** Plusieurs membres modifiant `db.json` simultanément ont créé de nombreux conflits.
 
-**Solution :** 
+**Solution :**
 - Synchronisation régulière avec `develop` avant de pousser
 - Résolution manuelle des conflits en fusionnant les tableaux JSON
 - Communication dans l'équipe pour éviter les modifications simultanées
@@ -247,7 +247,7 @@ Tous les endpoints utilisent Pydantic pour valider :
 
 **Problème :** Difficulté à générer le mot de passe d'application Gmail.
 
-**Solution :** 
+**Solution :**
 - Activation de la validation en deux étapes
 - Utilisation de la section "Mots de passe des applications" dans les paramètres Google
 - Documentation claire pour les autres membres
@@ -256,7 +256,7 @@ Tous les endpoints utilisent Pydantic pour valider :
 
 **Problème :** Certains membres oubliaient d'installer les hooks, causant des échecs CI.
 
-**Solution :** 
+**Solution :**
 - Ajout d'une checklist dans le README
 - Vérification systématique lors de l'onboarding
 - Documentation détaillée dans SETUP_INSTRUCTIONS.md
@@ -265,7 +265,7 @@ Tous les endpoints utilisent Pydantic pour valider :
 
 **Problème :** Premières revues trop rapides sans commentaires constructifs.
 
-**Solution :** 
+**Solution :**
 - Formation sur les bonnes pratiques de revue de code
 - Utilisation de la revue IA comme guide
 - Exigence de commentaires justifiés pour les "Request changes"
@@ -363,4 +363,3 @@ Les compétences acquises durant ce TP sont directement applicables en entrepris
 ---
 
 **Fin du Rapport**
-

@@ -1,6 +1,6 @@
 # 🎓 COMMENCEZ ICI - ProjetAPI
 
-> **Bienvenue dans le projet ProjetAPI !**  
+> **Bienvenue dans le projet ProjetAPI !**
 > Ce fichier vous guide vers la bonne documentation selon votre rôle.
 
 ---
@@ -203,19 +203,19 @@ cd projetapi-b3
 
 ### Questions Fréquentes
 
-**Q : Je ne sais pas par où commencer**  
+**Q : Je ne sais pas par où commencer**
 R : Lisez ce fichier (START_HERE.md) puis QUICKSTART.md
 
-**Q : Comment implémenter un endpoint ?**  
+**Q : Comment implémenter un endpoint ?**
 R : Consultez ENDPOINTS_EXAMPLES.md pour des exemples de code
 
-**Q : Comment configurer la CI/CD ?**  
+**Q : Comment configurer la CI/CD ?**
 R : Suivez PHASE3_GITHUB_ACTIONS.md étape par étape
 
-**Q : Comment résoudre un conflit de merge ?**  
+**Q : Comment résoudre un conflit de merge ?**
 R : Voir la section "Conflits de merge" dans QUICKSTART.md
 
-**Q : Où trouver les captures d'écran à prendre ?**  
+**Q : Où trouver les captures d'écran à prendre ?**
 R : Voir RAPPORT_TEMPLATE.md et PHASE3_GITHUB_ACTIONS.md
 
 ---
@@ -315,4 +315,3 @@ final_git/
 ---
 
 **Prêt ? Allez-y ! 🎓**
-

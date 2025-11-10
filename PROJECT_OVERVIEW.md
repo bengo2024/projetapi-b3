@@ -2,9 +2,9 @@
 
 ## 📚 Contexte Académique
 
-**Module :** Versionning et Gestion de Projet  
-**Niveau :** Bachelor 3 Informatique  
-**Durée :** 3 jours  
+**Module :** Versionning et Gestion de Projet
+**Niveau :** Bachelor 3 Informatique
+**Durée :** 3 jours
 **Type :** Travail en groupe (5-7 étudiants)
 
 ---
@@ -13,13 +13,13 @@
 
 Ce TP vous permet de maîtriser :
 
-✅ **Git Flow** : Structure de branches (main, develop, feature)  
-✅ **Git Hooks** : Validation automatique du code (pre-commit)  
-✅ **Collaboration GitHub** : Issues, Pull Requests, Revues de code  
-✅ **Gestion de conflits** : Résolution de merge conflicts  
-✅ **CI/CD** : Automatisation avec GitHub Actions  
-✅ **Revue IA** : Intégration d'un LLM (Gemini) pour la revue de code  
-✅ **Secrets Management** : Gestion sécurisée des clés API  
+✅ **Git Flow** : Structure de branches (main, develop, feature)
+✅ **Git Hooks** : Validation automatique du code (pre-commit)
+✅ **Collaboration GitHub** : Issues, Pull Requests, Revues de code
+✅ **Gestion de conflits** : Résolution de merge conflicts
+✅ **CI/CD** : Automatisation avec GitHub Actions
+✅ **Revue IA** : Intégration d'un LLM (Gemini) pour la revue de code
+✅ **Secrets Management** : Gestion sécurisée des clés API
 ✅ **Releases** : Publication de versions (Tags & Releases)
 
 ---
@@ -407,4 +407,3 @@ Pour le rapport PDF, vous devez fournir :
 **Bon courage et bon développement ! 🚀**
 
 *Ce projet a été conçu pour vous préparer aux pratiques professionnelles de développement logiciel en équipe.*
-

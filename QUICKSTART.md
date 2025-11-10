@@ -331,12 +331,12 @@ git push
 
 À la fin du TP, vous devez avoir :
 
-✅ Un dépôt GitHub avec Git Flow  
-✅ 7 fonctionnalités implémentées  
-✅ Historique de PRs avec revues  
-✅ Pipeline CI/CD fonctionnel  
-✅ Release v1.0.0 publiée  
-✅ Rapport PDF avec captures d'écran  
+✅ Un dépôt GitHub avec Git Flow
+✅ 7 fonctionnalités implémentées
+✅ Historique de PRs avec revues
+✅ Pipeline CI/CD fonctionnel
+✅ Release v1.0.0 publiée
+✅ Rapport PDF avec captures d'écran
 
 ---
 
@@ -366,4 +366,3 @@ git push
 # Première commande à exécuter :
 git status
 ```
-
