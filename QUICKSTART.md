@@ -152,14 +152,14 @@ rm test_hook.py
 ### Workflow complet
 
 ```bash
-# 1. S'assigner une Issue sur GitHub (ex: Issue #1)
+# 1. S'assigner une Issue sur GitHub (ex: Issue #2)
 
 # 2. Partir de develop
 git switch develop
 git pull origin develop
 
 # 3. Créer une branche feature
-git switch -c feature/post-projects
+git switch -c feature/post-projects (la branche doit porter le nom de l'api/ fonctionnalité que tu as choisi)
 
 # 4. Développer dans main.py
 # Voir ENDPOINTS_EXAMPLES.md pour des exemples de code
@@ -170,7 +170,7 @@ uvicorn main:app --reload
 
 # 6. Commiter (le hook se déclenche automatiquement)
 git add main.py
-git commit -m "Feat: Add POST /projects endpoint (fixes #1)"
+git commit -m "Feat: Add POST /projects endpoint (fixes #1)" (ce n'est que l'exemple changer le message)
 
 # 7. Pousser
 git push origin feature/post-projects
